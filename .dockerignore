@@ -1,0 +1,6 @@
+*
+!meta-data
+!src/python
+src/python/**/__pycache__
+src/python/**/*.egg-info
+src/python/build

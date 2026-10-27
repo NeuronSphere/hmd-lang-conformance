@@ -1,0 +1,23 @@
+{
+  "name": "hmd-lang-conformance",
+  "description": "Shared conformance vocabulary for the Python and Go persistence implementations (hmd-entity-storage NERD005)",
+  "build": { "commands": [["python"]] },
+  "global_variables": {
+    "base_package": "hmd_lang_conformance",
+    "package_name": "hmd_lang_conformance"
+  },
+  "bartleby": {
+    "roots": {
+      "index": {
+        "root_doc": "index",
+        "builders": ["html", "pdf"],
+        "config": {
+          "needs_id_regex": "^HMD_[A-Z0-9_]+$",
+          "needs_warnings": {
+            "requirement_without_test": "type == 'req' and '_REQ_' in id and not links_back and 'trace-exempt' not in tags"
+          }
+        }
+      }
+    }
+  }
+}

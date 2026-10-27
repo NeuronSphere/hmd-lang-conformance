@@ -1,0 +1,68 @@
+{
+  "name": "typed_optional",
+  "namespace": "hmd_lang_conformance",
+  "metatype": "noun",
+  "description": "Conformance noun with every attribute type optional (hmd-entity-storage NERD005 SPEC004).",
+  "attributes": {
+    "label": {
+      "type": "string",
+      "description": "Run-scoped label the suites search on.",
+      "required": true
+    },
+    "s_string": {
+      "type": "string",
+      "description": "A string attribute.",
+      "required": false
+    },
+    "i_integer": {
+      "type": "integer",
+      "description": "A integer attribute.",
+      "required": false
+    },
+    "f_float": {
+      "type": "float",
+      "description": "A float attribute.",
+      "required": false
+    },
+    "b_bool": {
+      "type": "bool",
+      "description": "A bool attribute.",
+      "required": false
+    },
+    "e_enum": {
+      "type": "enum",
+      "description": "A enum attribute.",
+      "required": false,
+      "enum_def": [
+        "RED",
+        "GREEN",
+        "BLUE"
+      ]
+    },
+    "ts_timestamp": {
+      "type": "timestamp",
+      "description": "A timestamp attribute.",
+      "required": false
+    },
+    "ep_epoch": {
+      "type": "epoch",
+      "description": "A epoch attribute.",
+      "required": false
+    },
+    "c_collection": {
+      "type": "collection",
+      "description": "A collection attribute.",
+      "required": false
+    },
+    "m_mapping": {
+      "type": "mapping",
+      "description": "A mapping attribute.",
+      "required": false
+    },
+    "bl_blob": {
+      "type": "blob",
+      "description": "A blob attribute.",
+      "required": false
+    }
+  }
+}

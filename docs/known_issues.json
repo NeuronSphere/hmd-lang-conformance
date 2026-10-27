@@ -1,0 +1,63 @@
+[
+  {
+    "id": "HMD_LANG_CONFORMANCE_ISSUE_001",
+    "title": "HMD_LANG_CONFORMANCE_ISSUE_001: hmd mickey build is broken in hmd-img-projectbuilder 0.5.395",
+    "body_markdown": "**HMD_LANG_CONFORMANCE_ISSUE_001** \u2014 The projectbuilder image pairs hmd-cli-mickey 1.0.52 with hmd-lib-mickey 0.1.3, which fails with \"cannot import name 'clean'\", so no lang pack can render its code in the standard build image.\n\n**Where**\n- [tools/render.sh#L13-L16](https://github.com/NeuronSphere/hmd-lang-conformance/blob/main/tools/render.sh#L13-L16)\n\n**Impact:** Every lang pack's `hmd mickey build` fails in hmd-img-projectbuilder 0.5.395; this repo works around it by installing hmd-cli-mickey 1.1.55 and hmd-lib-mickey 0.2.85 from the private index before rendering.\n\n**Found by:** Rendering this vocabulary for the NERD005 characterization, 2026-10-27; also NERD005 phase 2 (hmd-meta-types corpus).\n\n**Status:** open\n\n**Recommendation:** Publish a projectbuilder image with a matching mickey CLI and library pair, then drop the workaround in tools/render.sh.\n\nTracked in `docs/known_issues.rst` (HMD_LANG_CONFORMANCE_ISSUE_001).",
+    "labels": [
+      "bug",
+      "toolchain",
+      "mickey",
+      "known-issue",
+      "nerd005"
+    ],
+    "status": "open"
+  },
+  {
+    "id": "HMD_LANG_CONFORMANCE_ISSUE_002",
+    "title": "HMD_LANG_CONFORMANCE_ISSUE_002: vocabgen's filter hook used a Jinja API removed in Jinja 3.1",
+    "body_markdown": "**HMD_LANG_CONFORMANCE_ISSUE_002** \u2014 hmd-tmpl-vocabgen's filter hook imported jinja2.contextfilter, which Jinja 3.1 removed, so no vocabgen template rendered in the current toolchain.\n\n**Where**\n- hmd-tmpl-vocabgen `src/mickey/hooks` (fixed in b1b0405)\n\n**Impact:** All vocabgen-based code generation (python_lib, python_client, go_lib, typescript_lib) failed for every lang pack.\n\n**Found by:** NERD005 phase 2 (go_lib corpus), 2026-10-26.\n\n**Status:** fixed in hmd-tmpl-vocabgen b1b0405\n\n**Recommendation:** Done: the hook imports pass_context. Rebuild lang packs that pinned an older vocabgen.\n\nTracked in `docs/known_issues.rst` (HMD_LANG_CONFORMANCE_ISSUE_002).",
+    "labels": [
+      "bug",
+      "toolchain",
+      "vocabgen",
+      "known-issue",
+      "nerd005"
+    ],
+    "status": "fixed in hmd-tmpl-vocabgen b1b0405"
+  },
+  {
+    "id": "HMD_LANG_CONFORMANCE_ISSUE_003",
+    "title": "HMD_LANG_CONFORMANCE_ISSUE_003: Not yet published: consumers install from git",
+    "body_markdown": "**HMD_LANG_CONFORMANCE_ISSUE_003** \u2014 hmd-lang-conformance is not on the private index yet, so hmd-entity-storage's Bender container installs it from the GitHub repository's src/python subdirectory.\n\n**Where**\n- [src/python/setup.py#L1](https://github.com/NeuronSphere/hmd-lang-conformance/blob/main/src/python/setup.py#L1)\n\n**Impact:** Conformance runs need GitHub access from the Bender container (and credentials if the repository is private), and they track main rather than a released version.\n\n**Found by:** Moving the vocabulary out of hmd-entity-storage, 2026-10-27.\n\n**Status:** open\n\n**Recommendation:** Publish 0.1.0 to the private index with `hmd build` and pin hmd-lang-conformance~=0.1 in hmd-entity-storage/test/test_requirements.txt.\n\nTracked in `docs/known_issues.rst` (HMD_LANG_CONFORMANCE_ISSUE_003).",
+    "labels": [
+      "packaging",
+      "known-issue",
+      "nerd005"
+    ],
+    "status": "open"
+  },
+  {
+    "id": "HMD_LANG_CONFORMANCE_ISSUE_004",
+    "title": "HMD_LANG_CONFORMANCE_ISSUE_004: Lang packs must be baked into the service image",
+    "body_markdown": "**HMD_LANG_CONFORMANCE_ISSUE_004** \u2014 hmd-ms-base loads a lang pack by importing it, so serving this vocabulary needs a derived hmd-ms-base-test image with the package pip-installed rather than configuration alone.\n\n**Where**\n- [docker/Dockerfile.ms-base-test#L1](https://github.com/NeuronSphere/hmd-lang-conformance/blob/main/docker/Dockerfile.ms-base-test#L1)\n\n**Impact:** Every vocabulary change needs an image rebuild and a redeploy; a local nsctl environment also needs the image tagged under the bare and registry-qualified names.\n\n**Found by:** NERD005 characterization on scratch, 2026-10-27.\n\n**Status:** open\n\n**Recommendation:** Consider runtime lang-pack installation (or a lang-pack volume) in hmd-ms-base, and in the Go ms-base from the start.\n\nTracked in `docs/known_issues.rst` (HMD_LANG_CONFORMANCE_ISSUE_004).",
+    "labels": [
+      "design",
+      "hmd-ms-base",
+      "known-issue",
+      "nerd005"
+    ],
+    "status": "open"
+  },
+  {
+    "id": "HMD_LANG_CONFORMANCE_ISSUE_005",
+    "title": "HMD_LANG_CONFORMANCE_ISSUE_005: No Go code is generated for the vocabulary yet",
+    "body_markdown": "**HMD_LANG_CONFORMANCE_ISSUE_005** \u2014 Only the Python package is generated; the go_lib template (fixed in hmd-tmpl-vocabgen b1b0405) is not yet run for this vocabulary, and go_lib does not emit a go.mod.\n\n**Where**\n- [tools/render.sh#L1](https://github.com/NeuronSphere/hmd-lang-conformance/blob/main/tools/render.sh#L1)\n\n**Impact:** The Go CRUD service and Go engines (NERD005 phase 3 onward) cannot use these nouns until Go code is generated and importable.\n\n**Found by:** NERD005 phase 2 report, 2026-10-26.\n\n**Status:** deferred to NERD005 phase 3\n\n**Recommendation:** Add go_lib to tools/render.sh, commit src/go with a go.mod, and tag src/go/<module>/v0.1.0.\n\nTracked in `docs/known_issues.rst` (HMD_LANG_CONFORMANCE_ISSUE_005).",
+    "labels": [
+      "go",
+      "nerd005",
+      "known-issue",
+      "nerd005"
+    ],
+    "status": "deferred to NERD005 phase 3"
+  }
+]

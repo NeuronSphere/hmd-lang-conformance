@@ -1,0 +1,9 @@
+# The published hmd-ms-base-test service plus the hmd-lang-conformance
+# vocabulary, for running hmd-entity-storage's conformance suites against a
+# local nsctl environment. Build with `make conformance-image` from the repo root
+# (the build context is the repo root: setup.py reads meta-data/VERSION).
+ARG BASE_IMAGE=ghcr.io/hmdlabs/hmd-ms-base-test:0.1.163
+FROM ${BASE_IMAGE}
+COPY meta-data /tmp/hmd-lang-conformance/meta-data
+COPY src/python /tmp/hmd-lang-conformance/src/python
+RUN pip install --no-cache-dir --no-deps /tmp/hmd-lang-conformance/src/python && rm -rf /tmp/hmd-lang-conformance
