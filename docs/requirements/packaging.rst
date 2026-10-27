@@ -22,4 +22,4 @@ Packaging
     image with ``hmd-bender --label python-<engine>``; no test in this repo can
     deploy a service.
 
-    Known issue: :ref:`HMD_LANG_CONFORMANCE_ISSUE_004`.
+    Known issue: :need:`HMD_LANG_CONFORMANCE_ISSUE_004`.
